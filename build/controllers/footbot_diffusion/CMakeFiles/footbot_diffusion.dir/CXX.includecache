@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sriramana/argos3-examples/build/controllers/footbot_diffusion/footbot_diffusion_automoc.cpp
+
+/home/sriramana/argos3-examples/controllers/footbot_diffusion/footbot_diffusion.cpp
+footbot_diffusion.h
+/home/sriramana/argos3-examples/controllers/footbot_diffusion/footbot_diffusion.h
+argos3/core/utility/configuration/argos_configuration.h
+-
+argos3/core/utility/math/vector2.h
+-
+argos3/core/utility/logging/argos_log.h
+-
+argos3/core/utility/math/rng.h
+-
+argos3/core/utility/math/range.h
+-
+vector
+-
+tuple
+-
+set
+-
+
+/home/sriramana/argos3-examples/controllers/footbot_diffusion/footbot_diffusion.h
+argos3/core/control_interface/ci_controller.h
+-
+argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h
+-
+argos3/plugins/robots/foot-bot/control_interface/ci_footbot_proximity_sensor.h
+-
+argos3/core/utility/math/vector2.h
+-
+argos3/core/utility/math/rng.h
+-
+argos3/core/utility/math/range.h
+-
+
