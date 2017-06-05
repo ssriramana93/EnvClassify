@@ -33,12 +33,21 @@ void CRNN::Init(TConfigurationNode& t_node) {
    m_unNumberOfWeights = GetNumWeights();
 
    Reset();
+   GetNodeAttributeOrDefault(t_node, "parameter_file", m_strParameterFile, m_strParameterFile);
+
+   if( m_strParameterFile != "" ) {
+      try{
+         LoadNetworkParameters(m_strParameterFile);
+      }
+      catch(CARGoSException& ex) {
+         THROW_ARGOSEXCEPTION_NESTED("cannot load parameters from file.", ex);
+      }
+   }
 
 //   m_pfInputs = std::vector<Real>(m_unInputSize, 0.0f);
 //   InitNumHiddenNeurons();
 //   InitHiddenStates();
-   std::cout <<"Init Size: "<<m_pfInputs.size()<<"m_unNumberOfWeights ="<< m_unNumberOfWeights <<std::endl;
-   std::cout<<"nH= "<<m_pfHiddenState.size()<<std::endl;
+   
 
 }
 
@@ -48,11 +57,11 @@ void CRNN::InitNumHiddenNeurons() {
   }*/
 
   for (size_t i = 0; i <= m_unHiddenToHidden; i++) {
-  	m_unWLayers.push_back(10);
+  	m_unWLayers.push_back(100);
   }
 
   for (size_t i = 0; i <= m_unHiddenToOutput; i++) {
-  	m_unVLayers.push_back(10);
+  	m_unVLayers.push_back(100);
   }
 }
 
@@ -83,7 +92,47 @@ void CRNN::InitHiddenStates()  {
 
 /****************************************/
 /****************************************/
+void CRNN::LoadNetworkParameters(const std::string& str_filename) {
 
+   // open the input file
+   std::ifstream cIn(str_filename.c_str(), std::ios::in);
+   if( !cIn ) {
+      THROW_ARGOSEXCEPTION("Cannot open parameter file '" << str_filename << "' for reading");
+   }
+
+   // first parameter is the number of real-valued weights
+   UInt32 un_length = 0;
+   if( !(cIn >> un_length) ) {
+      THROW_ARGOSEXCEPTION("Cannot read data from file '" << str_filename << "'");
+   }
+
+   // check consistency between paramter file and xml declaration
+  // m_unNumberOfWeights = (m_unNumberOfInputs + 1) * m_unNumberOfOutputs;
+   if( un_length != m_unNumberOfWeights ) {
+      THROW_ARGOSEXCEPTION("Number of parameter mismatch: '"
+                           << str_filename
+                           << "' contains "
+                           << un_length
+                           << " parameters, while "
+                           << m_unNumberOfWeights
+                           << " were expected from the XML configuration file");
+   }
+
+   // create weights vector and load it from file
+   m_pfWeights.clear();
+  // if(m_pfWeights == NULL) m_pfWeights = new Real[m_unNumberOfWeights];
+   for(size_t i = 0; i < m_unNumberOfWeights; ++i) {
+   	  Real value;
+      if( !(cIn >> value ) ) {
+         THROW_ARGOSEXCEPTION("Cannot read data from file '" << str_filename << "'");
+      }
+      m_pfWeights.push_back(value);      	
+
+   }
+
+
+   
+}
 
 void CRNN::Reset() {
     m_pfInputs = std::vector<Real>(m_unInputSize, 0.0f);
@@ -151,6 +200,13 @@ void CRNN::ComputeOutputs() {
     in = out1;
     Prod(in, m_pfOutputs, count, m_unOutputSize);
     sigmoidWithSoftMax(m_pfOutputs);
+    std::string result;
+    if(m_pfOutputs[m_pfOutputs.size() - 3] > m_pfOutputs[m_pfOutputs.size() - 2]) {result = "Uniform";}
+    else {
+    	result = "Gaussian";
+    }
+    std::cout<<"Result = "<<result<<std::endl;
+    //std::cout<<"Prediction = "<<m_pfOutputs[m_pfOutputs.size() - 3]<<" W "<<m_pfOutputs[m_pfOutputs.size() - 2]<<std::endl;
   
 }
 

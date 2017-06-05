@@ -41,6 +41,8 @@ void CFootBotRNNController::Init(TConfigurationNode& t_node) {
       m_pcRABS      = GetSensor  <CCI_RangeAndBearingSensor       >("range_and_bearing"    );
       m_pcGround    = GetSensor  <CCI_FootBotMotorGroundSensor    >("footbot_motor_ground" );
       commData = new uint8_t[maxDataSize];
+      std::cout<<"All done"<<std::endl;
+
 
    }
    catch(CARGoSException& ex) {
@@ -54,6 +56,8 @@ void CFootBotRNNController::Init(TConfigurationNode& t_node) {
    catch(CARGoSException& ex) {
       THROW_ARGOSEXCEPTION_NESTED("Error initializing the perceptron network", ex);
    }
+   std::cout<<"All done"<<std::endl;
+
 }
 
 /****************************************/
@@ -61,7 +65,7 @@ void CFootBotRNNController::Init(TConfigurationNode& t_node) {
 
 void CFootBotRNNController::ControlStep() {
    //RLOG<<"Controller ControlStep"<<std::endl;
-   //std::cout<<"Controller Control Step"<<std::endl;
+//   std::cout<<"Controller Control Step"<<std::endl;
 
    /* Get sensory data */
    const CCI_FootBotProximitySensor::TReadings& tProx = m_pcProximity->GetReadings();
@@ -121,14 +125,14 @@ void CFootBotRNNController::ControlStep() {
    m_pcWheels->SetLinearVelocity(
       m_fLeftSpeed,
       m_fRightSpeed);
-  //std::cout<<"E"<<std::endl;
+   //std::cout<<"LS"<<m_fLeftSpeed<<"RS"<<m_fRightSpeed<<std::endl;
 
 
    for (size_t i = 0; i < maxDataSize; i++) {
    Real data;
    NN_OUTPUT_RANGE.MapValueIntoRange(
       data,              // value to write
-      m_cRNN.GetOutput(i + 3), // value to read
+      m_cRNN.GetOutput(i + 2), // value to read
       COMM_DATA_RANGE       // target range (here [-5:5])
       );
    commData[i] = static_cast<uint8_t>(data);
@@ -139,9 +143,9 @@ void CFootBotRNNController::ControlStep() {
    for(size_t  i = 0; i < maxDataSize; i++)
         m_pcRABA->SetData(i,commData[i]);
 
-   envProbVec = {m_cRNN.GetOutput(maxDataSize + 3),m_cRNN.GetOutput(maxDataSize + 4),m_cRNN.GetOutput(maxDataSize + 5)};
+   envProbVec = {m_cRNN.GetOutput(maxDataSize + 2),m_cRNN.GetOutput(maxDataSize + 3),m_cRNN.GetOutput(maxDataSize + 4)};
    envProbVecs_.push_back(envProbVec);
- //  std::cout<<"Control Step Done"<<std::endl; 
+  // std::cout<<"maxDataSize"<<maxDataSize + 3<<std::endl; 
    
 
 }

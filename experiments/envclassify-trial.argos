@@ -14,7 +14,7 @@
   <framework>
     <system threads="0" />
     <!-- Each experimental run is 1200 seconds long -->
-    <experiment length="500"
+    <experiment length="400"
                 ticks_per_second="10"
                  random_seed = "0"/>
   </framework>
@@ -37,7 +37,7 @@
       </sensors>
       <params num_inputs="67"
               num_outputs="15" 
-              />
+              parameter_file="best_28.dat"/>
     </footbot_rnn_controller>
 
   </controllers>
@@ -46,7 +46,7 @@
   <!-- * Loop functions * -->
   <!-- ****************** -->
   <loop_functions library="build/loop_functions/envclassify_loop_functions/libenvclassify_loop_functions"
-                  label="envclassify_loop_functions">
+                  label="envclassify_loop_functions" trial="1" >
 
   </loop_functions>
 
@@ -101,7 +101,13 @@
   <!-- ****************** -->
   <!-- * Visualization * -->
   <!-- ****************** -->
-
-  <visualization />
+  <!-- We don't want nor need a visualization during evolution -->
+   <visualization>
+    <qt-opengl>
+      <camera>
+        <placement idx="0" position="2.5,2.5,6" look_at="2.5,2.5,0" lens_focal_length="20" />
+      </camera>
+    </qt-opengl>
+  </visualization>
 
 </argos-configuration>

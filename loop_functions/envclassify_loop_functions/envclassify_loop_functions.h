@@ -14,7 +14,7 @@
 
 using namespace argos;
  //N = I*C1 + H*(C1**2) + V*(C2**2) + C1*C2 + C2*O
-static const size_t GENOME_SIZE = 1520;
+static const size_t GENOME_SIZE = 78200;
 
 class EnvClassifyLoopFunctions : public CLoopFunctions {
 
@@ -28,6 +28,9 @@ public:
    virtual void Destroy();
    inline void SetTrial(size_t un_trial) {
       m_unCurrentTrial = un_trial;
+     // seed = m_pcRNG->Uniform(CRange<UInt32>(0,1000));
+      /*seed = static_cast<UInt32>(rand()%1000);
+      std::cout<<"ST: "<<seed<<std::endl;*/
    }
    virtual CColor GetFloorColor(const CVector2& c_position_on_plane);
    virtual void PreStep();
@@ -76,6 +79,7 @@ private:
    std::ofstream m_cOutput;
 
    Real score;
+   UInt32 seed;
 
    void GenGaussianEnv(Real f_std_dev, size_t numSpots, PixToColor& pixtocolor);
    void GenUniformEnv(size_t numSpots, PixToColor& pixtocolor);

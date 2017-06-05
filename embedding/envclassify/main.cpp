@@ -32,7 +32,7 @@ float LaunchARGoS(GAGenome& c_genome) {
     */
    Real fDistance = std::numeric_limits<Real>::max();
 
-   for(size_t i = 0; i < 5; ++i) {
+   for(size_t i = 0; i < 10; ++i) {
       /* Tell the loop functions to get ready for the i-th trial */
       cLoopFunctions.SetTrial(i);
       /* Reset the experiment.
@@ -76,16 +76,16 @@ int main(int argc, char** argv) {
     * Initialize GALIB
     */
    /* Create an allele whose values can be in the range [-10,10] */
-   GAAlleleSet<float> cAlleleSet(-10.0f, 10.0f);
+   GAAlleleSet<float> cAlleleSet(-1000.0f, 1000.0f);
    /* Create a genome with 10 genes, using LaunchARGoS() to evaluate it */
    GARealGenome cGenome(GENOME_SIZE, cAlleleSet, LaunchARGoS);
    /* Create and configure a basic genetic algorithm using the genome */
    GASimpleGA cGA(cGenome);
    cGA.maximize();                     // the objective function must be maximized
-   cGA.populationSize(5);              // population size for each generation
-   cGA.nGenerations(500);              // number of generations
-   cGA.pMutation(0.05f);               // prob of gene mutation
-   cGA.pCrossover(0.15f);              // prob of gene crossover
+   cGA.populationSize(10);              // population size for each generation
+   cGA.nGenerations(1000);              // number of generations
+   cGA.pMutation(0.1f);               // prob of gene mutation
+   cGA.pCrossover(0.20f);              // prob of gene crossover
    cGA.scoreFilename("evolution.dat"); // filename for the result log
    cGA.flushFrequency(1);              // log the results every generation
 

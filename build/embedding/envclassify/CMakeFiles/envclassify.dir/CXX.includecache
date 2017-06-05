@@ -47,6 +47,8 @@ ga/GARealGenome.C
 ../controllers/footbot_envclassify/nn/rnn.h
 argos3/core/control_interface/ci_controller.h
 -
+argos3/core/utility/logging/argos_log.h
+-
 cmath
 -
 

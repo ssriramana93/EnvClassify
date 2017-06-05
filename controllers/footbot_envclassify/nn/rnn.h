@@ -2,6 +2,7 @@
 #define RNN_H
 
 #include <argos3/core/control_interface/ci_controller.h>
+#include <argos3/core/utility/logging/argos_log.h>
 #include <cmath>
 
 using namespace argos;
@@ -112,6 +113,7 @@ public:
    }
 
 
+   void LoadNetworkParameters(const std::string& str_filename);
 
 
 private:
@@ -122,6 +124,8 @@ private:
    std::vector<Real>    m_pfWeights, m_pfOutputs, m_pfInputs;
    std::vector<std::vector<Real> >   m_pfHiddenStateVec;
    std::vector<Real> m_pfHiddenState;
+   std::string m_strParameterFile;
+
   
 };
 

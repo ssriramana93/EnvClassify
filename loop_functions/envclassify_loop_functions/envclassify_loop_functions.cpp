@@ -13,12 +13,13 @@
 /****************************************/
 
 EnvClassifyLoopFunctions::EnvClassifyLoopFunctions() :
-   nEnvs(10),
+   score(0.0f),
+   nEnvs(20),
    xLength(100),
    yLength(100),
    m_pcFloor(NULL),
    m_pcRNG(NULL),
-   pixelPerMeter(50),
+   pixelPerMeter(20),
    nFootBots(5),
    m_unCurrentTrial(0),
    m_pfControllerParams(new Real[GENOME_SIZE]) {
@@ -47,7 +48,7 @@ EnvClassifyLoopFunctions::~EnvClassifyLoopFunctions() {
 
 void EnvClassifyLoopFunctions::Init(TConfigurationNode& t_node) {
    try {
-   //   std::cout<<"EnvClassifyLoopFunctions Init Called..."<<std::endl;
+  //    std::cout<<"EnvClassifyLoopFunctions Init Called..."<<std::endl;
 
       /* Get a pointer to the floor entity */
       m_pcFloor = &GetSpace().GetFloorEntity();
@@ -86,32 +87,33 @@ void EnvClassifyLoopFunctions::Init(TConfigurationNode& t_node) {
         m_pcControllers.push_back(&dynamic_cast<CFootBotRNNController&>(m_pcFootBot->GetControllableEntity().GetController()));
       }
       
-     // std::cout<<"Footbots creation successful.."<<std::endl;
+   //   std::cout<<"Footbots creation successful.."<<std::endl;
 
       for (size_t i = 0; i < nEnvs; i++) {
-     //    std::cout<<"Generating Env "<<i<<std::endl;
+      //  std::cout<<"Generating Env "<<i<<std::endl;
+          size_t tol = 10;
 
-         PixToColor pixtocolor(xLength + 1, std::vector<CColor>(yLength + 1));
+         PixToColor pixtocolor(xLength + tol, std::vector<CColor>(yLength + tol));
 
        //  pixtocolor = std::make_unique<std::unique_ptr<CColor> >(new std::unique_ptr<CColor>[xLength]);
       //   pixtocolor = new CColor*[xLength];
-         for(int i = 0; i <= xLength; ++i) {
+         for(int i = 0; i < (xLength + tol); ++i) {
        //     pixtocolor[i] = std::make_unique<CColor[]>(new CColor[yLength]);
          //  pixtocolor[i] = new CColor[yLength];
-            for(size_t j = 0; j<= yLength; j++) 
+            for(size_t j = 0; j< (yLength + tol); j++) 
                pixtocolor[i][j] = CColor::WHITE;
        }
-
-         if(i % 2) {
-            GenGaussianEnv(0.1, 30, pixtocolor);
+       // Even = Uniform, Odd = Gaussian
+         if((i % 2)==1) {
+            GenGaussianEnv(0.1, 1000, pixtocolor);
          }
          else {
-            GenUniformEnv(30, pixtocolor);
+            GenUniformEnv(3000, pixtocolor);
          }
          envList.push_back(pixtocolor);
       }
       
-      // std::cout<<"Env Generation successful.."<<std::endl;
+//       std::cout<<"Env Generation successful.."<<std::endl;
 
    
        GetNodeAttributeOrDefault(t_node, "trial", m_unCurrentTrial, m_unCurrentTrial);
@@ -120,7 +122,7 @@ void EnvClassifyLoopFunctions::Init(TConfigurationNode& t_node) {
 
    }
    catch(CARGoSException& ex) {
-      THROW_ARGOSEXCEPTION_NESTED("Error parsing loop functions!", ex);
+      THROW_ARGOSEXCEPTION_NESTED("Error parsing loop functions!",ex);
    }
 }
 
@@ -130,19 +132,21 @@ void EnvClassifyLoopFunctions::Init(TConfigurationNode& t_node) {
 /****************************************/
 
 void EnvClassifyLoopFunctions::Reset() {
-  //std::cout<<"EnvClassifyLoopFunctions Reset Called..."<<std::endl;
+//  std::cout<<"EnvClassifyLoopFunctions Reset Called..."<<std::endl;
   CVector3 lLimit = m_pcArenaLimits.GetMin();
+  //std::cout<<"Seed"<<seed<<std::endl;
+ // m_pcRNG->SetSeed(seed);
+
 
   for (auto const footbot: m_pcFootBots) {
-  //std::cout<<"Moving"<<std::endl;
-
+  
   //bool created = false;  
   while(1) {  
   //std::cout<<"ArenaLimits ("<<lLimit[0]<<","<<lLimit[1]<<")"<<std::endl;
   CVector3 Position;
-  Position.SetX(lLimit[0] + m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[0])));
-  Position.SetY(lLimit[1] + m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[1])));
-  std::cout<<"R: "<<lLimit[0] + m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[0]))<<std::endl;
+  Position.SetX(lLimit[0] + m_pcRNG->Uniform(CRange<Real>(0.5f,ArenaSize[0] - 0.5f)));
+  Position.SetY(lLimit[1] + m_pcRNG->Uniform(CRange<Real>(0.5f,ArenaSize[1] - 0.5f)));
+//  std::cout<<"R: "<<lLimit[0] + m_pcRNG->Uniform(CRange<Real>(0.5f,ArenaSize[0] - 0.5f))<<std::endl;
   CRadians cOrient = m_pcRNG->Uniform(CRadians::UNSIGNED_RANGE);
   CQuaternion Orientation;
   Orientation.FromEulerAngles(
@@ -156,12 +160,12 @@ void EnvClassifyLoopFunctions::Reset() {
          Orientation, // with this orientation
          false                                         // this is not a check, leave the robot there
          )) {
-      LOGERR << "Can't move robot in <"
+     /* LOGERR << "Can't move robot in <"
              << Position
              << ">, <"
              << Orientation
              << ">"
-             << std::endl;
+             << std::endl;*/
      // continue;       
 
    }
@@ -170,10 +174,17 @@ void EnvClassifyLoopFunctions::Reset() {
    }
   }
 }
-//std::cout<<"Moved All Footbots..."<<std::endl;
-  // std::cout<<"CurrTrial"<<m_unCurrentTrial<<"EnvList"<<envList.size()<<std::endl;
+  // std::cout<<"Moved All Footbots..."<<std::endl;
+   //std::cout<<"CurrTrial "<<m_unCurrentTrial<<"EnvList "<<envList.size()<<std::endl;
+   if (m_unCurrentTrial >= envList.size()) {
+       THROW_ARGOSEXCEPTION("Trial number greater than created!");
+    }
+   auto trial = m_pcRNG->Uniform(CRange<UInt32>(0,nEnvs)); 
+   m_unCurrentTrial = trial;
    currEnv = envList[m_unCurrentTrial];
+   //currEnv = envList[trial];
    currEnvType = m_unCurrentTrial%2;
+   //currEnvType = trial%2;
  //  std::cout<<"Reset Done"<<m_unCurrentTrial<<std::endl;
 
 
@@ -202,9 +213,16 @@ CColor EnvClassifyLoopFunctions::GetFloorColor(const CVector2& c_position_on_pla
       }
    }*/
    CVector3 lLimit = m_pcArenaLimits.GetMin(), rLimit = m_pcArenaLimits.GetMax();
-  //std::cout<<"XFloor = "<<static_cast<size_t>(pixelPerMeter*(c_position_on_plane.GetX() - lLimit[0]))<<" YFloor = "<<static_cast<size_t>(pixelPerMeter*(c_position_on_plane.GetY() - lLimit[1]))<<std::endl;
-   CColor temp = currEnv[static_cast<size_t>(pixelPerMeter*(c_position_on_plane.GetX() - lLimit[0]))][static_cast<size_t>(pixelPerMeter*(c_position_on_plane.GetY() - lLimit[1]))];
- //  std::cout<<"Insane"<<std::endl;
+   auto xIndex = static_cast<size_t>(pixelPerMeter*(c_position_on_plane.GetX() - lLimit[0])), yIndex = static_cast<size_t>(pixelPerMeter*(c_position_on_plane.GetY() - lLimit[1]));
+   if(xIndex > xLength) {
+    xIndex = xLength;
+   } 
+
+   if(yIndex > yLength) {
+    xIndex = yLength;
+  }
+
+   CColor temp = currEnv[xIndex][yIndex];
    return temp;
 }
 
@@ -213,13 +231,22 @@ CColor EnvClassifyLoopFunctions::GetFloorColor(const CVector2& c_position_on_pla
 
 void EnvClassifyLoopFunctions::GenGaussianEnv(Real f_std_dev, size_t numSpots, PixToColor& pixtocolor) {
 //   std::cout<<"Generating Gaussian Env..."<<std::endl;
-   Real mean_x = m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[0]));
-   Real mean_y = m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[1]));
+   Real mean_x = m_pcRNG->Uniform(CRange<Real>(0.5f,ArenaSize[0] - 0.5f));
+   Real mean_y = m_pcRNG->Uniform(CRange<Real>(0.5f,ArenaSize[1] - 0.5f));
 
 
    for (size_t i = 0; i < numSpots; i++) {
+       auto xIndex = static_cast<size_t>(pixelPerMeter*m_pcRNG->Gaussian(f_std_dev, mean_x)), yIndex = static_cast<size_t>(pixelPerMeter*m_pcRNG->Gaussian(f_std_dev, mean_x));
+
+      if(xIndex > xLength) {
+    xIndex = xLength;
+   } 
+
+   if(yIndex > yLength) {
+    xIndex = yLength;
+  }
    
-      pixtocolor[static_cast<size_t>(pixelPerMeter*m_pcRNG->Gaussian(f_std_dev, mean_x))][static_cast<size_t>(pixelPerMeter*m_pcRNG->Gaussian(f_std_dev, mean_x))] = CColor::BLACK;
+      pixtocolor[xIndex][yIndex] = CColor::BLACK;
 
    }
 }
@@ -228,8 +255,17 @@ void EnvClassifyLoopFunctions::GenUniformEnv(size_t numSpots, PixToColor& pixtoc
 //   std::cout<<"Generating Uniform Env..."<<std::endl;
 
    for (size_t i = 0; i < numSpots; i++) {
+    auto xIndex = static_cast<size_t>(pixelPerMeter*m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[0]))), yIndex = static_cast<size_t>(pixelPerMeter*m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[1])));
+
+      if(xIndex > xLength) {
+    xIndex = xLength;
+   } 
+
+   if(yIndex > yLength) {
+    xIndex = yLength;
+  }
      
-      pixtocolor[static_cast<size_t>(pixelPerMeter*m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[0])))][static_cast<size_t>(pixelPerMeter*m_pcRNG->Uniform(CRange<Real>(0.0f,ArenaSize[1])))] = CColor::BLACK;
+      pixtocolor[xIndex][yIndex] = CColor::BLACK;
    }
 }
 
@@ -254,14 +290,14 @@ void EnvClassifyLoopFunctions::PreStep() {
 
 }
 void EnvClassifyLoopFunctions::PostStep() {
-//    std::cout<<"PostStep"<<std::endl;
+ //   std::cout<<"PostStep"<<std::endl;
 
 }
 
 
 Real EnvClassifyLoopFunctions::Performance() {
- // std::vector<EnvProbType> envProbVec;
-  //std::cout<<"Performance called"<<std::endl;
+  //std::vector<EnvProbType> envProbVec;
+//  std::cout<<"Performance called"<<std::endl;
 
   Real score = 0.0f;
   CFootBotRNNController::EnvProbsVecType envProbVecs;
