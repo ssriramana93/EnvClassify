@@ -1,5 +1,5 @@
 
-#include <envclassify_loop_functions.h>
+#include <envclassify_loop_functions_tf.h>
 #include <argos3/core/simulator/simulator.h>
 #include <argos3/core/utility/configuration/argos_configuration.h>
 #include <argos3/plugins/robots/foot-bot/simulator/footbot_entity.h>
@@ -21,8 +21,8 @@ EnvClassifyLoopFunctions::EnvClassifyLoopFunctions() :
    m_pcRNG(NULL),
    pixelPerMeter(20),
    nFootBots(5),
-   m_unCurrentTrial(0),
-   m_pfControllerParams(new Real[GENOME_SIZE]) {
+   m_unCurrentTrial(0)
+   {
     std::cout<<"EnvClassifyLoopFunctions Object Created..."<<std::endl;
 }
 
@@ -268,10 +268,9 @@ void EnvClassifyLoopFunctions::GenUniformEnv(size_t numSpots, PixToColor& pixtoc
       pixtocolor[xIndex][yIndex] = CColor::BLACK;
    }
 }
-
+/*
 void EnvClassifyLoopFunctions::ConfigureFromGenome(const GARealGenome& c_genome) {
-   /* Copy the genes into the NN parameter buffer */
- // std::cout<<"ConfigureFromGenome"<<std::endl;
+   
    for(size_t i = 0; i < GENOME_SIZE; ++i) {
       m_pfControllerParams[i] = c_genome[i];
    }
@@ -279,11 +278,10 @@ void EnvClassifyLoopFunctions::ConfigureFromGenome(const GARealGenome& c_genome)
 	for (auto &controller: m_pcControllers) {
 
   
-   /* Set the NN parameters */
    controller->GetRNN().SetOnlineParameters(GENOME_SIZE, m_pfControllerParams);
 }
 
-}
+}*/
 
 void EnvClassifyLoopFunctions::PreStep() {
 //    std::cout<<"PreStep"<<std::endl;

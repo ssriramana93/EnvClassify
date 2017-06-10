@@ -82,9 +82,9 @@ int main(int argc, char** argv) {
    /* Create and configure a basic genetic algorithm using the genome */
    GASimpleGA cGA(cGenome);
    cGA.maximize();                     // the objective function must be maximized
-   cGA.populationSize(10);              // population size for each generation
+   cGA.populationSize(35);              // population size for each generation
    cGA.nGenerations(1000);              // number of generations
-   cGA.pMutation(0.1f);               // prob of gene mutation
+   cGA.pMutation(0.25f);               // prob of gene mutation
    cGA.pCrossover(0.20f);              // prob of gene crossover
    cGA.scoreFilename("evolution.dat"); // filename for the result log
    cGA.flushFrequency(1);              // log the results every generation
