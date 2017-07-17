@@ -55,7 +55,7 @@ include loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loo
 
 loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target manualcontrol_loop_functions"
-	cd /home/sriramana/argos3-examples/build/loop_functions/manualcontrol_loop_functions && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/loop_functions/manualcontrol_loop_functions && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_automoc.dir/ ""
 
 manualcontrol_loop_functions_automoc: loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_automoc
 manualcontrol_loop_functions_automoc: loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_automoc.dir/build.make

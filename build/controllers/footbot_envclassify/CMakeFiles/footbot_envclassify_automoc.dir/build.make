@@ -55,7 +55,7 @@ include controllers/footbot_envclassify/CMakeFiles/footbot_envclassify_automoc.d
 
 controllers/footbot_envclassify/CMakeFiles/footbot_envclassify_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target footbot_envclassify"
-	cd /home/sriramana/argos3-examples/build/controllers/footbot_envclassify && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_envclassify/CMakeFiles/footbot_envclassify_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/controllers/footbot_envclassify && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_envclassify/CMakeFiles/footbot_envclassify_automoc.dir/ ""
 
 footbot_envclassify_automoc: controllers/footbot_envclassify/CMakeFiles/footbot_envclassify_automoc
 footbot_envclassify_automoc: controllers/footbot_envclassify/CMakeFiles/footbot_envclassify_automoc.dir/build.make

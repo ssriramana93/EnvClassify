@@ -1,10 +1,10 @@
-#ifndef ENVCLASSIFY_LOOP_FUNCTIONS_H
-#define ENVCLASSIFY_LOOP_FUNCTIONS_H
+#ifndef ENVCLASSIFY_LOOP_FUNCTIONS_TF_H
+#define ENVCLASSIFY_LOOP_FUNCTIONS_TF_H
 
 #include <argos3/core/simulator/loop_functions.h>
 #include <argos3/core/simulator/entity/floor_entity.h>
 #include <argos3/plugins/robots/foot-bot/simulator/footbot_entity.h>
-#include <controllers/footbot_envclassify/footbot_rnn_controller.h>
+#include <controllers/footbot_envclassify_tf/footbot_rnn_controller.h>
 #include <argos3/core/utility/math/range.h>
 #include <argos3/core/utility/math/rng.h>
 
@@ -45,7 +45,6 @@ public:
    Real Performance();
 private:
 
-   Real m_fFoodSquareRadius;
    CRange<Real> m_EnvClassifyArenaSideX, m_EnvClassifyArenaSideY;
    std::vector<CVector2> m_cFoodPos;
    CFloorEntity* m_pcFloor;
@@ -60,7 +59,6 @@ private:
   // std::vector<std::shared_ptr<CFootBotRNNController> > m_pcControllers;
    std::vector<CFootBotRNNController* > m_pcControllers;
 
-   Real* m_pfControllerParams;
 
 
 

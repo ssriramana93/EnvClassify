@@ -14,7 +14,7 @@
 
 using namespace argos;
  //N = I*C1 + H*(C1**2) + V*(C2**2) + C1*C2 + C2*O
-static const size_t GENOME_SIZE = 78200;
+static const size_t GENOME_SIZE = 4440;
 
 class EnvClassifyLoopFunctions : public CLoopFunctions {
 

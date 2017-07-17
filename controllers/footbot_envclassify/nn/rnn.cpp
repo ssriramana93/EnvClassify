@@ -57,11 +57,11 @@ void CRNN::InitNumHiddenNeurons() {
   }*/
 
   for (size_t i = 0; i <= m_unHiddenToHidden; i++) {
-  	m_unWLayers.push_back(100);
+  	m_unWLayers.push_back(20);
   }
 
   for (size_t i = 0; i <= m_unHiddenToOutput; i++) {
-  	m_unVLayers.push_back(100);
+  	m_unVLayers.push_back(20);
   }
 }
 
@@ -183,8 +183,6 @@ void CRNN::ComputeOutputs() {
     	in = out1;
     	Prod(in, out1, count, m_unWLayers[i]);
   	    sigmoid(out1);
-
-
     }
 
 
@@ -201,11 +199,11 @@ void CRNN::ComputeOutputs() {
     Prod(in, m_pfOutputs, count, m_unOutputSize);
     sigmoidWithSoftMax(m_pfOutputs);
     std::string result;
-    if(m_pfOutputs[m_pfOutputs.size() - 3] > m_pfOutputs[m_pfOutputs.size() - 2]) {result = "Uniform";}
+  /*  if(m_pfOutputs[m_pfOutputs.size() - 3] > m_pfOutputs[m_pfOutputs.size() - 2]) {result = "Uniform";}
     else {
     	result = "Gaussian";
     }
-    std::cout<<"Result = "<<result<<std::endl;
+    std::cout<<"Result = "<<result<<std::endl;*/
     //std::cout<<"Prediction = "<<m_pfOutputs[m_pfOutputs.size() - 3]<<" W "<<m_pfOutputs[m_pfOutputs.size() - 2]<<std::endl;
   
 }

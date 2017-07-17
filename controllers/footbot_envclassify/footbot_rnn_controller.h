@@ -83,6 +83,7 @@ private:
 
    EnvProbsType envProbVec;
    EnvProbsVecType envProbVecs_;
+   Real env1Percentage = 0.0f, env2Percentage = 0.0f;
 
 };
 

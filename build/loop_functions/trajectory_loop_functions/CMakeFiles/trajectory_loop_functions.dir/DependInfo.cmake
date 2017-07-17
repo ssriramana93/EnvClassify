@@ -14,6 +14,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_TARGET_DEFINITIONS_CXX
   "QT_CORE_LIB"
   "QT_GUI_LIB"
+  "QT_NO_DEBUG"
   "QT_WIDGETS_LIB"
   )
 
@@ -21,12 +22,11 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "loop_functions/trajectory_loop_functions"
   "../loop_functions/trajectory_loop_functions"
-  "/usr/include/x86_64-linux-gnu/qt5"
-  "/usr/include/x86_64-linux-gnu/qt5/QtWidgets"
-  "/usr/include/x86_64-linux-gnu/qt5/QtGui"
-  "/usr/include/x86_64-linux-gnu/qt5/QtCore"
-  "/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64"
-  "/usr/local/include"
+  "/home/sriramana/anaconda2/include/qt"
+  "/home/sriramana/anaconda2/include/qt/QtWidgets"
+  "/home/sriramana/anaconda2/include/qt/QtGui"
+  "/home/sriramana/anaconda2/include/qt/QtCore"
+  "/home/sriramana/anaconda2/./mkspecs/linux-g++"
   "../"
   "/usr/include/lua5.2"
   )

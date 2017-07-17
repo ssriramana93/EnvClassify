@@ -55,7 +55,7 @@ include loop_functions/mpga_loop_functions/CMakeFiles/mpga_automoc.dir/progress.
 
 loop_functions/mpga_loop_functions/CMakeFiles/mpga_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target mpga"
-	cd /home/sriramana/argos3-examples/build/loop_functions/mpga_loop_functions && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/loop_functions/mpga_loop_functions/CMakeFiles/mpga_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/loop_functions/mpga_loop_functions && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/loop_functions/mpga_loop_functions/CMakeFiles/mpga_automoc.dir/ ""
 
 mpga_automoc: loop_functions/mpga_loop_functions/CMakeFiles/mpga_automoc
 mpga_automoc: loop_functions/mpga_loop_functions/CMakeFiles/mpga_automoc.dir/build.make

@@ -55,7 +55,7 @@ include embedding/mpga/CMakeFiles/mpga_phototaxis_automoc.dir/progress.make
 
 embedding/mpga/CMakeFiles/mpga_phototaxis_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target mpga_phototaxis"
-	cd /home/sriramana/argos3-examples/build/embedding/mpga && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/embedding/mpga/CMakeFiles/mpga_phototaxis_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/embedding/mpga && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/embedding/mpga/CMakeFiles/mpga_phototaxis_automoc.dir/ ""
 
 mpga_phototaxis_automoc: embedding/mpga/CMakeFiles/mpga_phototaxis_automoc
 mpga_phototaxis_automoc: embedding/mpga/CMakeFiles/mpga_phototaxis_automoc.dir/build.make

@@ -19,8 +19,8 @@
 /* Definitions for random number generation */
 #include <argos3/core/utility/math/rng.h>
 /* Definition of the perceptron */
-//#include <LSTMWrapper.h>
-#include "nn/rnn.h"
+#include "LSTMWrapper.h"
+//#include "nn/rnn.h"
 
 
 /*
@@ -47,9 +47,7 @@ public:
    void ControlStep();
    void Reset();
    void Destroy();
-    inline CRNN& GetRNN() {
-      return m_cRNN;
-   }
+   
 
 
 //   typedef std::tuple<Real, Real, Real> EnvProbsType;
@@ -60,6 +58,12 @@ public:
    void GetEnvProbs(EnvProbsVecType& envProbVecs) {
       envProbVecs = envProbVecs_;
    }
+
+   void SetCurrEnvType(size_t envType) {
+      currEnvType = envType;
+   }
+
+   Real GetCurrReward();
 
 private:
    /* Pointer to the differential steering actuator */
@@ -73,8 +77,8 @@ private:
     /* Pointer to the foot-bot motor ground sensor */
    CCI_FootBotMotorGroundSensor* m_pcGround;
    /* The perceptron neural network */
-//   LSTMWrapper wrapper;
-   CRNN m_cRNN;
+   LSTMWrapper wrapper;
+   //CRNN m_cRNN;
 
    /* Wheel speeds */
    Real m_fLeftSpeed, m_fRightSpeed;
@@ -87,6 +91,8 @@ private:
 
    EnvProbsType envProbVec;
    EnvProbsVecType envProbVecs_;
+
+   size_t currEnvType;
 
 };
 

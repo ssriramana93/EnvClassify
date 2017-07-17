@@ -201,11 +201,7 @@ void CRNN::ComputeOutputs() {
     Prod(in, m_pfOutputs, count, m_unOutputSize);
     sigmoidWithSoftMax(m_pfOutputs);
     std::string result;
-    if(m_pfOutputs[m_pfOutputs.size() - 3] > m_pfOutputs[m_pfOutputs.size() - 2]) {result = "Uniform";}
-    else {
-    	result = "Gaussian";
-    }
-    std::cout<<"Result = "<<result<<std::endl;
+   
     //std::cout<<"Prediction = "<<m_pfOutputs[m_pfOutputs.size() - 3]<<" W "<<m_pfOutputs[m_pfOutputs.size() - 2]<<std::endl;
   
 }

@@ -55,7 +55,7 @@ include controllers/footbot_nn/CMakeFiles/footbot_nn_automoc.dir/progress.make
 
 controllers/footbot_nn/CMakeFiles/footbot_nn_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target footbot_nn"
-	cd /home/sriramana/argos3-examples/build/controllers/footbot_nn && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_nn/CMakeFiles/footbot_nn_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/controllers/footbot_nn && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_nn/CMakeFiles/footbot_nn_automoc.dir/ ""
 
 footbot_nn_automoc: controllers/footbot_nn/CMakeFiles/footbot_nn_automoc
 footbot_nn_automoc: controllers/footbot_nn/CMakeFiles/footbot_nn_automoc.dir/build.make

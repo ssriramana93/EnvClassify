@@ -55,7 +55,7 @@ include controllers/footbot_flocking/CMakeFiles/footbot_flocking_automoc.dir/pro
 
 controllers/footbot_flocking/CMakeFiles/footbot_flocking_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target footbot_flocking"
-	cd /home/sriramana/argos3-examples/build/controllers/footbot_flocking && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_flocking/CMakeFiles/footbot_flocking_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/controllers/footbot_flocking && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_flocking/CMakeFiles/footbot_flocking_automoc.dir/ ""
 
 footbot_flocking_automoc: controllers/footbot_flocking/CMakeFiles/footbot_flocking_automoc
 footbot_flocking_automoc: controllers/footbot_flocking/CMakeFiles/footbot_flocking_automoc.dir/build.make

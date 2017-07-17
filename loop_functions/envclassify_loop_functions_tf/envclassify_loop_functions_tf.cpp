@@ -3,7 +3,7 @@
 #include <argos3/core/simulator/simulator.h>
 #include <argos3/core/utility/configuration/argos_configuration.h>
 #include <argos3/plugins/robots/foot-bot/simulator/footbot_entity.h>
-#include <controllers/footbot_envclassify/footbot_rnn_controller.h>
+#include <controllers/footbot_envclassify_tf/footbot_rnn_controller.h>
 #include <argos3/core/utility/logging/argos_log.h>
 
 
@@ -27,8 +27,7 @@ EnvClassifyLoopFunctions::EnvClassifyLoopFunctions() :
 }
 
 EnvClassifyLoopFunctions::~EnvClassifyLoopFunctions() {
- // std::cout<<"Destructor Called"<<std::endl;
-  delete[] m_pfControllerParams;
+  std::cout<<"Destructor Called"<<std::endl;
  /* for (auto const &iter1: envList) {
      for (auto const &iter2: iter1) {
        delete[] iter2;
@@ -186,6 +185,11 @@ void EnvClassifyLoopFunctions::Reset() {
    currEnvType = m_unCurrentTrial%2;
    //currEnvType = trial%2;
  //  std::cout<<"Reset Done"<<m_unCurrentTrial<<std::endl;
+   for (auto &controller: m_pcControllers) {
+
+  
+     controller->SetCurrEnvType(currEnvType);
+  }
 
 
 }
@@ -194,7 +198,20 @@ void EnvClassifyLoopFunctions::Reset() {
 /****************************************/
 
 void EnvClassifyLoopFunctions::Destroy() {
-  std::cout<<"Destroy Called"<<std::endl;
+  std::cout<<"Destroy Called in loop functions"<<std::endl;
+  std::cout<<"Destructor Called"<<std::endl;
+ /* for (auto const &iter1: envList) {
+     for (auto const &iter2: iter1) {
+       delete[] iter2;
+      }
+     delete[] iter1; 
+  }*/
+  for (size_t i = 0; i < m_pcFootBots.size(); i++) {
+    delete m_pcFootBots[i];
+    delete m_pcControllers[i];
+  }
+  m_pcFootBots.clear();
+  m_pcControllers.clear();
    /* Close the file */
 }
 

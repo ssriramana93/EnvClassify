@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Debug")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -39,8 +39,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/sriramana/argos3-examples/build/loop_functions/trajectory_loop_functions/cmake_install.cmake")
   include("/home/sriramana/argos3-examples/build/loop_functions/id_loop_functions/cmake_install.cmake")
   include("/home/sriramana/argos3-examples/build/loop_functions/manualcontrol_loop_functions/cmake_install.cmake")
-  include("/home/sriramana/argos3-examples/build/loop_functions/galib_phototaxis_loop_functions/cmake_install.cmake")
-  include("/home/sriramana/argos3-examples/build/loop_functions/envclassify_loop_functions/cmake_install.cmake")
+  include("/home/sriramana/argos3-examples/build/loop_functions/envclassify_loop_functions_tf/cmake_install.cmake")
 
 endif()
 

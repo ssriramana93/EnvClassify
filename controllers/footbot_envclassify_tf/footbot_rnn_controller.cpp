@@ -22,7 +22,7 @@ maxMessagesAllowed(3) {
 /****************************************/
 
 CFootBotRNNController::~CFootBotRNNController() {
-  std::cout<<"Destructor for RNN"<<std::endl;
+  std::cout<<"Destructor for Controller"<<std::endl;
 
 }
 
@@ -49,13 +49,7 @@ void CFootBotRNNController::Init(TConfigurationNode& t_node) {
       THROW_ARGOSEXCEPTION_NESTED("Error initializing sensors/actuators", ex);
    }
 
-   /* Initialize the perceptron */
-   try {
-      m_cRNN.Init(t_node);
-   }
-   catch(CARGoSException& ex) {
-      THROW_ARGOSEXCEPTION_NESTED("Error initializing the perceptron network", ex);
-   }
+   
    std::cout<<"All done"<<std::endl;
 
 }
@@ -92,12 +86,15 @@ void CFootBotRNNController::ControlStep() {
       THROW_ARGOSEXCEPTION_NESTED("Error feeding comm to input accumulator", ex);
    }
 
+   std::string id = GetId();
+
    try {
-  //   wrapper.SetInput(cAccumulateInput);
+
+     wrapper.SetInput(cAccumulateInput);
     
-     for(size_t i = 0; i < cAccumulateInput.size(); i++) {
+  /*   for(size_t i = 0; i < cAccumulateInput.size(); i++) {
       m_cRNN.SetInput(i, cAccumulateInput[i]);
-   }
+   }*/
 
    }
    catch(CARGoSException& ex) {
@@ -106,11 +103,11 @@ void CFootBotRNNController::ControlStep() {
     //std::cout<<"C"<<std::endl;
 
    /* Compute NN outputs */
-  // wrapper.ComputeOutputs();
+     wrapper.ComputeOutput(id);
    //    std::cout<<"D"<<std::endl;
-   //std::vector output;
-   //wrapper.GetOutput(output);
-      m_cRNN.ComputeOutputs();
+     std::vector<Real> output;
+     wrapper.GetOutput(output);
+   //   m_cRNN.ComputeOutputs();
 
    /*
     * Apply NN outputs to actuation
@@ -120,12 +117,12 @@ void CFootBotRNNController::ControlStep() {
     */
    NN_OUTPUT_RANGE.MapValueIntoRange(
       m_fLeftSpeed,               // value to write
-      m_cRNN.GetOutput(0), // value to read
+      output[0], // value to read
       WHEEL_ACTUATION_RANGE       // target range (here [-5:5])
       );
    NN_OUTPUT_RANGE.MapValueIntoRange(
       m_fRightSpeed,              // value to write
-      m_cRNN.GetOutput(1), // value to read
+      output[1], // value to read
       WHEEL_ACTUATION_RANGE       // target range (here [-5:5])
       );
    m_pcWheels->SetLinearVelocity(
@@ -138,7 +135,7 @@ void CFootBotRNNController::ControlStep() {
    Real data;
    NN_OUTPUT_RANGE.MapValueIntoRange(
       data,              // value to write
-      m_cRNN.GetOutput(i + 2), // value to read
+      output[i + 2], // value to read
       COMM_DATA_RANGE       // target range (here [-5:5])
       );
    commData[i] = static_cast<uint8_t>(data);
@@ -149,19 +146,24 @@ void CFootBotRNNController::ControlStep() {
    for(size_t  i = 0; i < maxDataSize; i++)
         m_pcRABA->SetData(i,commData[i]);
 
-   envProbVec = {m_cRNN.GetOutput(maxDataSize + 2),m_cRNN.GetOutput(maxDataSize + 3),m_cRNN.GetOutput(maxDataSize + 4)};
+   envProbVec = {output[maxDataSize + 2],output[maxDataSize + 3],output[maxDataSize + 4]};
    envProbVecs_.push_back(envProbVec);
   // std::cout<<"maxDataSize"<<maxDataSize + 3<<std::endl; 
-   
+  
+   wrapper.SetReward(GetCurrReward(), id);
 
 }
 
+
+Real CFootBotRNNController::GetCurrReward() {
+  return (envProbVec[currEnvType]);
+}
 /****************************************/
 /****************************************/
 
 void CFootBotRNNController::Reset() {
 //  std::cout<<"Reset Called in RNN"<<std::endl;
-   m_cRNN.Reset();
+   wrapper.Reset();
    m_pcRABA->ClearData();
    envProbVecs_.clear();
 }
@@ -170,9 +172,9 @@ void CFootBotRNNController::Reset() {
 /****************************************/
 
 void CFootBotRNNController::Destroy() {
- //   std::cout<<"Destroy Called in RNN"<<std::endl;
+    std::cout<<"Destroy Called in RNN"<<std::endl;
 
-   m_cRNN.Destroy();
+   wrapper.Destroy();
 }
 
 void CFootBotRNNController::feedComToNN(const CCI_RangeAndBearingSensor::TReadings& tRABS, std::vector<Real>& cAccumulateInput) {

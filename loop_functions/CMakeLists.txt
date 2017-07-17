@@ -15,7 +15,8 @@ endif(ARGOS_COMPILE_QTOPENGL)
 
 # If GALIB was found, also descend into galib_phototaxis_loop_functions
 if(GALIB_FOUND)
-  add_subdirectory(galib_phototaxis_loop_functions)
-  add_subdirectory(envclassify_loop_functions)
+  #add_subdirectory(galib_phototaxis_loop_functions)
+  #add_subdirectory(galib_phototaxis_loop_functions_test)
+  #add_subdirectory(envclassify_loop_functions)
 endif(GALIB_FOUND)
 add_subdirectory(envclassify_loop_functions_tf)

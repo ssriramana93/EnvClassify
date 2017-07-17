@@ -58,8 +58,8 @@ CMAKE_BINARY_DIR = /home/sriramana/argos3-examples/build
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -241,6 +241,32 @@ footbot_envclassify_automoc/fast:
 .PHONY : footbot_envclassify_automoc/fast
 
 #=============================================================================
+# Target rules for targets named footbot_envclassify_tf
+
+# Build rule for target.
+footbot_envclassify_tf: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 footbot_envclassify_tf
+.PHONY : footbot_envclassify_tf
+
+# fast build rule for target.
+footbot_envclassify_tf/fast:
+	$(MAKE) -f controllers/footbot_envclassify_tf/CMakeFiles/footbot_envclassify_tf.dir/build.make controllers/footbot_envclassify_tf/CMakeFiles/footbot_envclassify_tf.dir/build
+.PHONY : footbot_envclassify_tf/fast
+
+#=============================================================================
+# Target rules for targets named footbot_envclassify_tf_automoc
+
+# Build rule for target.
+footbot_envclassify_tf_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 footbot_envclassify_tf_automoc
+.PHONY : footbot_envclassify_tf_automoc
+
+# fast build rule for target.
+footbot_envclassify_tf_automoc/fast:
+	$(MAKE) -f controllers/footbot_envclassify_tf/CMakeFiles/footbot_envclassify_tf_automoc.dir/build.make controllers/footbot_envclassify_tf/CMakeFiles/footbot_envclassify_tf_automoc.dir/build
+.PHONY : footbot_envclassify_tf_automoc/fast
+
+#=============================================================================
 # Target rules for targets named footbot_foraging
 
 # Build rule for target.
@@ -317,6 +343,32 @@ footbot_nn_automoc: cmake_check_build_system
 footbot_nn_automoc/fast:
 	$(MAKE) -f controllers/footbot_nn/CMakeFiles/footbot_nn_automoc.dir/build.make controllers/footbot_nn/CMakeFiles/footbot_nn_automoc.dir/build
 .PHONY : footbot_nn_automoc/fast
+
+#=============================================================================
+# Target rules for targets named footbot_nn_test
+
+# Build rule for target.
+footbot_nn_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 footbot_nn_test
+.PHONY : footbot_nn_test
+
+# fast build rule for target.
+footbot_nn_test/fast:
+	$(MAKE) -f controllers/footbot_nn_test/CMakeFiles/footbot_nn_test.dir/build.make controllers/footbot_nn_test/CMakeFiles/footbot_nn_test.dir/build
+.PHONY : footbot_nn_test/fast
+
+#=============================================================================
+# Target rules for targets named footbot_nn_test_automoc
+
+# Build rule for target.
+footbot_nn_test_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 footbot_nn_test_automoc
+.PHONY : footbot_nn_test_automoc
+
+# fast build rule for target.
+footbot_nn_test_automoc/fast:
+	$(MAKE) -f controllers/footbot_nn_test/CMakeFiles/footbot_nn_test_automoc.dir/build.make controllers/footbot_nn_test/CMakeFiles/footbot_nn_test_automoc.dir/build
+.PHONY : footbot_nn_test_automoc/fast
 
 #=============================================================================
 # Target rules for targets named eyebot_circle
@@ -553,56 +605,30 @@ manualcontrol_loop_functions_automoc/fast:
 .PHONY : manualcontrol_loop_functions_automoc/fast
 
 #=============================================================================
-# Target rules for targets named galib_phototaxis_loop_functions
+# Target rules for targets named envclassify_loop_functions_tf
 
 # Build rule for target.
-galib_phototaxis_loop_functions: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 galib_phototaxis_loop_functions
-.PHONY : galib_phototaxis_loop_functions
+envclassify_loop_functions_tf: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 envclassify_loop_functions_tf
+.PHONY : envclassify_loop_functions_tf
 
 # fast build rule for target.
-galib_phototaxis_loop_functions/fast:
-	$(MAKE) -f loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/build.make loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/build
-.PHONY : galib_phototaxis_loop_functions/fast
+envclassify_loop_functions_tf/fast:
+	$(MAKE) -f loop_functions/envclassify_loop_functions_tf/CMakeFiles/envclassify_loop_functions_tf.dir/build.make loop_functions/envclassify_loop_functions_tf/CMakeFiles/envclassify_loop_functions_tf.dir/build
+.PHONY : envclassify_loop_functions_tf/fast
 
 #=============================================================================
-# Target rules for targets named galib_phototaxis_loop_functions_automoc
+# Target rules for targets named envclassify_loop_functions_tf_automoc
 
 # Build rule for target.
-galib_phototaxis_loop_functions_automoc: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 galib_phototaxis_loop_functions_automoc
-.PHONY : galib_phototaxis_loop_functions_automoc
+envclassify_loop_functions_tf_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 envclassify_loop_functions_tf_automoc
+.PHONY : envclassify_loop_functions_tf_automoc
 
 # fast build rule for target.
-galib_phototaxis_loop_functions_automoc/fast:
-	$(MAKE) -f loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_automoc.dir/build.make loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_automoc.dir/build
-.PHONY : galib_phototaxis_loop_functions_automoc/fast
-
-#=============================================================================
-# Target rules for targets named envclassify_loop_functions
-
-# Build rule for target.
-envclassify_loop_functions: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 envclassify_loop_functions
-.PHONY : envclassify_loop_functions
-
-# fast build rule for target.
-envclassify_loop_functions/fast:
-	$(MAKE) -f loop_functions/envclassify_loop_functions/CMakeFiles/envclassify_loop_functions.dir/build.make loop_functions/envclassify_loop_functions/CMakeFiles/envclassify_loop_functions.dir/build
-.PHONY : envclassify_loop_functions/fast
-
-#=============================================================================
-# Target rules for targets named envclassify_loop_functions_automoc
-
-# Build rule for target.
-envclassify_loop_functions_automoc: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 envclassify_loop_functions_automoc
-.PHONY : envclassify_loop_functions_automoc
-
-# fast build rule for target.
-envclassify_loop_functions_automoc/fast:
-	$(MAKE) -f loop_functions/envclassify_loop_functions/CMakeFiles/envclassify_loop_functions_automoc.dir/build.make loop_functions/envclassify_loop_functions/CMakeFiles/envclassify_loop_functions_automoc.dir/build
-.PHONY : envclassify_loop_functions_automoc/fast
+envclassify_loop_functions_tf_automoc/fast:
+	$(MAKE) -f loop_functions/envclassify_loop_functions_tf/CMakeFiles/envclassify_loop_functions_tf_automoc.dir/build.make loop_functions/envclassify_loop_functions_tf/CMakeFiles/envclassify_loop_functions_tf_automoc.dir/build
+.PHONY : envclassify_loop_functions_tf_automoc/fast
 
 #=============================================================================
 # Target rules for targets named mpga_phototaxis
@@ -631,56 +657,30 @@ mpga_phototaxis_automoc/fast:
 .PHONY : mpga_phototaxis_automoc/fast
 
 #=============================================================================
-# Target rules for targets named envclassify
+# Target rules for targets named experiment
 
 # Build rule for target.
-envclassify: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 envclassify
-.PHONY : envclassify
+experiment: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 experiment
+.PHONY : experiment
 
 # fast build rule for target.
-envclassify/fast:
-	$(MAKE) -f embedding/envclassify/CMakeFiles/envclassify.dir/build.make embedding/envclassify/CMakeFiles/envclassify.dir/build
-.PHONY : envclassify/fast
+experiment/fast:
+	$(MAKE) -f embedding/envclassify_tf/CMakeFiles/experiment.dir/build.make embedding/envclassify_tf/CMakeFiles/experiment.dir/build
+.PHONY : experiment/fast
 
 #=============================================================================
-# Target rules for targets named envclassify_automoc
+# Target rules for targets named experiment_automoc
 
 # Build rule for target.
-envclassify_automoc: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 envclassify_automoc
-.PHONY : envclassify_automoc
+experiment_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 experiment_automoc
+.PHONY : experiment_automoc
 
 # fast build rule for target.
-envclassify_automoc/fast:
-	$(MAKE) -f embedding/envclassify/CMakeFiles/envclassify_automoc.dir/build.make embedding/envclassify/CMakeFiles/envclassify_automoc.dir/build
-.PHONY : envclassify_automoc/fast
-
-#=============================================================================
-# Target rules for targets named galib_phototaxis
-
-# Build rule for target.
-galib_phototaxis: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 galib_phototaxis
-.PHONY : galib_phototaxis
-
-# fast build rule for target.
-galib_phototaxis/fast:
-	$(MAKE) -f embedding/galib/CMakeFiles/galib_phototaxis.dir/build.make embedding/galib/CMakeFiles/galib_phototaxis.dir/build
-.PHONY : galib_phototaxis/fast
-
-#=============================================================================
-# Target rules for targets named galib_phototaxis_automoc
-
-# Build rule for target.
-galib_phototaxis_automoc: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 galib_phototaxis_automoc
-.PHONY : galib_phototaxis_automoc
-
-# fast build rule for target.
-galib_phototaxis_automoc/fast:
-	$(MAKE) -f embedding/galib/CMakeFiles/galib_phototaxis_automoc.dir/build.make embedding/galib/CMakeFiles/galib_phototaxis_automoc.dir/build
-.PHONY : galib_phototaxis_automoc/fast
+experiment_automoc/fast:
+	$(MAKE) -f embedding/envclassify_tf/CMakeFiles/experiment_automoc.dir/build.make embedding/envclassify_tf/CMakeFiles/experiment_automoc.dir/build
+.PHONY : experiment_automoc/fast
 
 # Help Target
 help:
@@ -700,12 +700,16 @@ help:
 	@echo "... footbot_gripping_automoc"
 	@echo "... footbot_envclassify"
 	@echo "... footbot_envclassify_automoc"
+	@echo "... footbot_envclassify_tf"
+	@echo "... footbot_envclassify_tf_automoc"
 	@echo "... footbot_foraging"
 	@echo "... footbot_foraging_automoc"
 	@echo "... footbot_manualcontrol"
 	@echo "... footbot_manualcontrol_automoc"
 	@echo "... footbot_nn"
 	@echo "... footbot_nn_automoc"
+	@echo "... footbot_nn_test"
+	@echo "... footbot_nn_test_automoc"
 	@echo "... eyebot_circle"
 	@echo "... eyebot_circle_automoc"
 	@echo "... eyebot_flocking"
@@ -724,16 +728,12 @@ help:
 	@echo "... id_loop_functions_automoc"
 	@echo "... manualcontrol_loop_functions"
 	@echo "... manualcontrol_loop_functions_automoc"
-	@echo "... galib_phototaxis_loop_functions"
-	@echo "... galib_phototaxis_loop_functions_automoc"
-	@echo "... envclassify_loop_functions"
-	@echo "... envclassify_loop_functions_automoc"
+	@echo "... envclassify_loop_functions_tf"
+	@echo "... envclassify_loop_functions_tf_automoc"
 	@echo "... mpga_phototaxis"
 	@echo "... mpga_phototaxis_automoc"
-	@echo "... envclassify"
-	@echo "... envclassify_automoc"
-	@echo "... galib_phototaxis"
-	@echo "... galib_phototaxis_automoc"
+	@echo "... experiment"
+	@echo "... experiment_automoc"
 .PHONY : help
 
 

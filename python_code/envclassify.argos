@@ -14,7 +14,7 @@
   <framework>
     <system threads="0" />
     <!-- Each experimental run is 1200 seconds long -->
-    <experiment length="500"
+    <experiment length="10"
                 ticks_per_second="10"
                  random_seed = "0"/>
   </framework>
@@ -46,7 +46,7 @@
   <!-- * Loop functions * -->
   <!-- ****************** -->
   <loop_functions library="build/loop_functions/envclassify_loop_functions_tf/libenvclassify_loop_functions_tf"
-                  label="envclassify_loop_functions_tf">
+                  label="envclassify_loop_functions">
 
   </loop_functions>
 

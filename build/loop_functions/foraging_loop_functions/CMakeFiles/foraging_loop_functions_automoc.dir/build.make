@@ -55,7 +55,7 @@ include loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_function
 
 loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target foraging_loop_functions"
-	cd /home/sriramana/argos3-examples/build/loop_functions/foraging_loop_functions && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/loop_functions/foraging_loop_functions && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_automoc.dir/ ""
 
 foraging_loop_functions_automoc: loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_automoc
 foraging_loop_functions_automoc: loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_automoc.dir/build.make

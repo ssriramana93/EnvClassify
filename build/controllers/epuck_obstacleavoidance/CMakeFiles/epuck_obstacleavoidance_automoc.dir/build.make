@@ -55,7 +55,7 @@ include controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_a
 
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target epuck_obstacleavoidance"
-	cd /home/sriramana/argos3-examples/build/controllers/epuck_obstacleavoidance && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/controllers/epuck_obstacleavoidance && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_automoc.dir/ ""
 
 epuck_obstacleavoidance_automoc: controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_automoc
 epuck_obstacleavoidance_automoc: controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_automoc.dir/build.make

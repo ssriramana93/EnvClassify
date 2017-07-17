@@ -37,7 +37,7 @@
       </sensors>
       <params num_inputs="67"
               num_outputs="15" 
-              parameter_file="best_28.dat"/>
+              parameter_file="best_30.dat"/>
     </footbot_rnn_controller>
 
   </controllers>
@@ -107,6 +107,8 @@
       <camera>
         <placement idx="0" position="2.5,2.5,6" look_at="2.5,2.5,0" lens_focal_length="20" />
       </camera>
+      <user_functions library="build/loop_functions/id_loop_functions/libid_loop_functions"
+                      label="id_qtuser_functions" />
     </qt-opengl>
   </visualization>
 

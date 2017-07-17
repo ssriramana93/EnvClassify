@@ -1,6 +1,6 @@
 link_directories(${CMAKE_BINARY_DIR}/controllers/footbot_envclassify_tf)
 
-add_library(envclassify_loop_functions_tf SHARED envclassify_loop_functions_tf.cpp)
+add_library(envclassify_loop_functions_tf SHARED envclassify_loop_functions_tf.cpp envclassify_loop_functions_tf.h)
 target_link_libraries(envclassify_loop_functions_tf
   footbot_envclassify_tf
   argos3core_simulator

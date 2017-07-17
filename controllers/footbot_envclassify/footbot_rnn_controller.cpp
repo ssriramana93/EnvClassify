@@ -146,7 +146,9 @@ void CFootBotRNNController::ControlStep() {
    envProbVec = {m_cRNN.GetOutput(maxDataSize + 2),m_cRNN.GetOutput(maxDataSize + 3),m_cRNN.GetOutput(maxDataSize + 4)};
    envProbVecs_.push_back(envProbVec);
   // std::cout<<"maxDataSize"<<maxDataSize + 3<<std::endl; 
-   
+   env1Percentage += m_cRNN.GetOutput(maxDataSize + 2);
+   env2Percentage += m_cRNN.GetOutput(maxDataSize + 3);
+   RLOG <<"Uniform = "<< env1Percentage <<"Gaussian = "<< env2Percentage << std::endl;
 
 }
 

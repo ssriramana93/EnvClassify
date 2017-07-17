@@ -55,7 +55,7 @@ include controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol_autom
 
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target footbot_manualcontrol"
-	cd /home/sriramana/argos3-examples/build/controllers/footbot_manualcontrol && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/controllers/footbot_manualcontrol && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol_automoc.dir/ ""
 
 footbot_manualcontrol_automoc: controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol_automoc
 footbot_manualcontrol_automoc: controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol_automoc.dir/build.make

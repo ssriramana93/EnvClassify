@@ -55,7 +55,7 @@ include controllers/footbot_foraging/CMakeFiles/footbot_foraging_automoc.dir/pro
 
 controllers/footbot_foraging/CMakeFiles/footbot_foraging_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target footbot_foraging"
-	cd /home/sriramana/argos3-examples/build/controllers/footbot_foraging && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_foraging/CMakeFiles/footbot_foraging_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/controllers/footbot_foraging && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_foraging/CMakeFiles/footbot_foraging_automoc.dir/ ""
 
 footbot_foraging_automoc: controllers/footbot_foraging/CMakeFiles/footbot_foraging_automoc
 footbot_foraging_automoc: controllers/footbot_foraging/CMakeFiles/footbot_foraging_automoc.dir/build.make

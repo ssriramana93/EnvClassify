@@ -231,8 +231,8 @@ CColor EnvClassifyLoopFunctions::GetFloorColor(const CVector2& c_position_on_pla
 
 void EnvClassifyLoopFunctions::GenGaussianEnv(Real f_std_dev, size_t numSpots, PixToColor& pixtocolor) {
 //   std::cout<<"Generating Gaussian Env..."<<std::endl;
-   Real mean_x = m_pcRNG->Uniform(CRange<Real>(0.5f,ArenaSize[0] - 0.5f));
-   Real mean_y = m_pcRNG->Uniform(CRange<Real>(0.5f,ArenaSize[1] - 0.5f));
+   Real mean_x = m_pcRNG->Uniform(CRange<Real>(1.0f,ArenaSize[0] - 1.0f));
+   Real mean_y = m_pcRNG->Uniform(CRange<Real>(1.0f,ArenaSize[1] - 1.0f));
 
 
    for (size_t i = 0; i < numSpots; i++) {
@@ -303,20 +303,26 @@ Real EnvClassifyLoopFunctions::Performance() {
   CFootBotRNNController::EnvProbsVecType envProbVecs;
   for (auto const &iter: m_pcControllers) {
  //   envProbVec.push_back(iter->GetEnvProbs());
-
+    Real exp = 0.0f, nScore = 0.0f,n = 0;
   	iter->GetEnvProbs(envProbVecs);
-    Real t = 0.0f;
     for (auto probVec: envProbVecs) {
+    exp++;  
+    if((exp > 1500)) {
+      n++;
+    }
     for(size_t  i = 0; i < 3; i++) {
     if(i == currEnvType)  {
-      score += t*probVec[i];
-      t = t + 0.1f;
+      if((exp > 1500)) {
+      nScore += probVec[i];
+    }
+      //t = t + 0.1f;
     }
     else {
   //    score -= probVec[i];
       }
       }
     }
+    score += (nScore/n);
   } 
   return score;
 }

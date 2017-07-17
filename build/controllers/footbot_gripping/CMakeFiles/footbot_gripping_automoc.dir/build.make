@@ -55,7 +55,7 @@ include controllers/footbot_gripping/CMakeFiles/footbot_gripping_automoc.dir/pro
 
 controllers/footbot_gripping/CMakeFiles/footbot_gripping_automoc:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sriramana/argos3-examples/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic moc for target footbot_gripping"
-	cd /home/sriramana/argos3-examples/build/controllers/footbot_gripping && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_gripping/CMakeFiles/footbot_gripping_automoc.dir/ Debug
+	cd /home/sriramana/argos3-examples/build/controllers/footbot_gripping && /usr/bin/cmake -E cmake_autogen /home/sriramana/argos3-examples/build/controllers/footbot_gripping/CMakeFiles/footbot_gripping_automoc.dir/ ""
 
 footbot_gripping_automoc: controllers/footbot_gripping/CMakeFiles/footbot_gripping_automoc
 footbot_gripping_automoc: controllers/footbot_gripping/CMakeFiles/footbot_gripping_automoc.dir/build.make
