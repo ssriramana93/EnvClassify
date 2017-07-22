@@ -14,7 +14,7 @@ class ArgosInterface:
 		self.oa_hists = {}
 		self.id = None
 		self.traj = []
-		
+		self.results = []
 
 	def RegisterActorAndNoise(self, actor, noise_fn, replay_buffer):
 		self.actor = actor
@@ -25,6 +25,9 @@ class ArgosInterface:
 
 	def Add2Dict(self, dictionary, id, value):
 		if (id in dictionary) and (len(dictionary[id]) >= (self.actor.max_seq - 1)):
+			traj = (deepcopy(self.oa_hists), deepcopy(self.ac), deepcopy(self.reward))
+			self.results.append(traj)
+			self.replay_buffer.add(traj)
 			self.ClearAllDict()
 
 		if id not in dictionary:
@@ -49,10 +52,11 @@ class ArgosInterface:
 		
 
 	def GetPrevAction(self):
-		if self.id not in self.ac:
-			return np.zeros(self.actor.a_dim)
-		else:
-			return self.ac[self.id][-1]	
+		#if self.id not in self.ac:
+		#	return np.zeros(self.actor.a_dim)
+		#else:
+		#	return self.ac[self.id][-1]
+		return np.zeros(self.actor.a_dim)
 
 	#def SetOutput(self, temp):
 	#	self.ac = temp	
@@ -79,12 +83,14 @@ class ArgosInterface:
 	def GetOutput(self):
 
 		ac = self.ac[self.id][-1].tolist()
+		#print "action", ac
 		assert(len(ac) == self.actor.a_dim)
 		return ac
 
 	def GetTraj(self):
-		#print
-		return self.oar_seq
+		results = deepcopy(self.results)
+		self.results = []
+		return results
 
 	def SetReward(self, reward, id):
 		assert(self.id == id)
@@ -103,8 +109,6 @@ class ArgosInterface:
 
 
 	def ClearAllDict(self):
-		traj = (deepcopy(self.oa_hists), deepcopy(self.ac), deepcopy(self.reward))
-		self.replay_buffer.add(traj)
 		self.ac.clear()
 		self.obs.clear()
 		self.oa_seq.clear()

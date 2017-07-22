@@ -5,8 +5,6 @@
 #include <loop_functions/envclassify_loop_functions_tf/envclassify_loop_functions_tf.h>
 
 double experiment::LaunchARGoS() {
-   /* Convert the received genome to the actual genome type */
- //  GARealGenome& cRealGenome = dynamic_cast<GARealGenome&>(c_genome);
    /* The CSimulator class of ARGoS is a singleton. Therefore, to
     * manipulate an ARGoS experiment, it is enough to get its instance.
     * This variable is declared 'static' so it is created
@@ -23,7 +21,7 @@ double experiment::LaunchARGoS() {
     */
    Real fDistance = std::numeric_limits<Real>::max();
 
-   for(size_t i = 0; i < 10; ++i) {
+   for(size_t i = 0; i < 1; ++i) {
       /* Tell the loop functions to get ready for the i-th trial */
       cLoopFunctions.SetTrial(i);
       /* Reset the experiment.
@@ -44,27 +42,34 @@ double experiment::LaunchARGoS() {
      // std::cout<<"fDistance"<<fDistance;
    }
    /* Return the result of the evaluation */
+//cSimulator.Destroy();
+   //cLoopFunctions.Destroy();
    return fDistance;
 }
 
+experiment::experiment() {
+ //  cSimulator = argos::CSimulator::GetInstance();
+  argos::CSimulator& cSimulator = argos::CSimulator::GetInstance();
 
-
-
-double experiment::execute() {
-   /*
-    * Initialize ARGoS
-    */
    /* The CSimulator class of ARGoS is a singleton. Therefore, to
     * manipulate an ARGoS experiment, it is enough to get its instance */
-   argos::CSimulator& cSimulator = argos::CSimulator::GetInstance();
    /* Set the .argos configuration file
     * This is a relative path which assumed that you launch the executable
     * from argos3-examples (as said also in the README) */
    cSimulator.SetExperimentFileName("python_code/envclassify.argos");
    /* Load it to configure ARGoS */
    cSimulator.LoadExperiment();
+   std::cout<<"experiment_c"<<std::endl;
+}
 
-   return LaunchARGoS();
+
+
+void experiment::execute() {
+   /*
+    * Initialize ARGoS
+    */
+   
+   double a = LaunchARGoS();
 
 }
 
@@ -75,6 +80,8 @@ BOOST_PYTHON_MODULE(libexperiment)
     class_<experiment>("experiment")
         .def("execute", &experiment::execute)
         .def("launchArgos", &experiment::LaunchARGoS)
+        .def("destroy", &experiment::destroy)
+
 
     ;
 }

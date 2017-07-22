@@ -16,17 +16,24 @@ class CriticNetwork(object):
         self.n_agents = n_agents
         self.i_agent = i_agent
         self.learning_rate = learning_rate
-        self.tau = tau
+        self.tau = tf.placeholder(dtype = tf.float32)
+        self.ntau = tau
         self.curr_seq = tf.placeholder(shape = [None, None], dtype = tf.int32)
-        # Create the critic network
-        self.inputs, self.action, self.actions, self.out = self.create_critic_network()
 
-        self.network_params = tf.trainable_variables()[num_actor_vars:]
+        self.ips = None
+
+        # Create the critic network
+        self.inputs, self.action, self.actions, self.out = self.create_critic_network(("Critic" + str(self.i_agent)))
+
+#        self.network_params = tf.trainable_variables()[num_actor_vars:]
+        self.network_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = ("Critic" + str(self.i_agent)))
+
 
         # Target Network
-        self.target_inputs, self.target_action, self.target_actions, self.target_out = self.create_critic_network()
+        self.target_inputs, self.target_action, self.target_actions, self.target_out = self.create_critic_network(("TargetCritic" + str(self.i_agent)))
 
-        self.target_network_params = tf.trainable_variables()[(len(self.network_params) + num_actor_vars):]
+        #self.target_network_params = tf.trainable_variables()[(len(self.network_params) + num_actor_vars):]
+        self.target_network_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = ("TargetCritic" + str(self.i_agent)))
 
         # Op for periodically updating target network with online network
         # weights with regularization
@@ -54,39 +61,44 @@ class CriticNetwork(object):
 
 
 
-    def create_critic_network(self):
-        self.sa_dim = self.s_dim + self.a_dim
-        inputs = tflearn.input_data(shape=[None, self.seq_len, self.sa_dim])
-        #actions = tflearn.input_data(shape=[None, self.a_dim*self.n_agents])
-        actions = [tflearn.input_data(shape=[None, self.a_dim]) for i in xrange(self.n_agents)]
+    def create_critic_network(self, scope):
+        with tf.variable_scope(scope):
+            self.sa_dim = self.s_dim + self.a_dim
+            inputs = tflearn.input_data(shape=[None, self.seq_len, self.sa_dim])
+            self.ips = tf.gather_nd(inputs, self.curr_seq)
 
-        #action = tf.slice(actions, [0, self.i_agent*self.a_dim], [-1,self.a_dim])
-        actions_vec = tf.concat(actions, axis = 1)
-        #net = tflearn.fully_connected(inputs, 400, activation='relu')
+            #actions = tflearn.input_data(shape=[None, self.a_dim*self.n_agents])
+            actions = [tflearn.input_data(shape=[None, self.a_dim]) for i in xrange(self.n_agents)]
 
-        net = tflearn.reshape(inputs, new_shape=[-1, self.sa_dim])
-        ip_nunits = 300
-        net = tflearn.fully_connected(net, ip_nunits, weights_init=tflearn.initializations.xavier())
-        net = tflearn.reshape(net, new_shape=(-1, self.seq_len, ip_nunits))
+            #action = tf.slice(actions, [0, self.i_agent*self.a_dim], [-1,self.a_dim])
+            actions_vec = tf.concat(actions, axis = 1)
+            #net = tflearn.fully_connected(inputs, 400, activation='relu')
+            weights_init  = tflearn.initializations.xavier()
 
-        net = tflearn.gru(net, 400, activation='relu',return_seq = True, dynamic = True, weights_init = tflearn.initializations.xavier())
-        net = tf.concat(net, axis = 0)
 
-        op_nunits = 300
-        net = tflearn.fully_connected(net, op_nunits, weights_init = tflearn.initializations.xavier())
-        net = tflearn.reshape (net, new_shape = (-1, self.seq_len, op_nunits))
+            net = tflearn.reshape(inputs, new_shape=[-1, self.sa_dim])
+            ip_nunits = 50
+            net = tflearn.fully_connected(net, ip_nunits, weights_init = weights_init, activation = 'relu')
+            net = tflearn.reshape(net, new_shape=(-1, self.seq_len, ip_nunits))
 
-        net = tf.gather_nd(net, self.curr_seq)
+            net = tflearn.gru(net, 50, activation='tanh',return_seq = True, dynamic = False, weights_init = weights_init)
+            net = tf.concat(net, axis = 0)
 
-        net = tflearn.reshape(net, new_shape = (-1, op_nunits))
+            op_nunits = 50
+            net = tflearn.fully_connected(net, op_nunits, weights_init = weights_init)
+            net = tflearn.reshape (net, new_shape = (-1, self.seq_len, op_nunits))
 
-        aip_dim = 300
-        t2 = tflearn.fully_connected(actions_vec, aip_dim)
-        net = tflearn.merge([net, t2], mode = 'concat')
-       # net = tflearn.activation(
-       #     tf.matmul(net, net.W) + tf.matmul(actions, t2.W) + t2.b, activation='relu')
+            net = tf.gather_nd(net, self.curr_seq)
 
-        out = tflearn.fully_connected(net,1)
+            net = tflearn.reshape(net, new_shape = (-1, op_nunits))
+
+            aip_dim = 50
+            t2 = tflearn.fully_connected(actions_vec, aip_dim, weights_init = weights_init, activation = 'relu')
+            net = tflearn.merge([net, t2], mode = 'concat')
+           # net = tflearn.activation(
+           #     tf.matmul(net, net.W) + tf.matmul(actions, t2.W) + t2.b, activation='relu')
+
+            out = tflearn.fully_connected(net, 1, weights_init = weights_init)
 
 
 
@@ -132,7 +144,7 @@ class CriticNetwork(object):
         inputs = np.concatenate([inputs, np.zeros((nsamp, self.max_seq - seq_len, self.sa_dim))], axis = 1)
         return inputs, seq_len
 
-    def train(self, inputs, actions, predicted_q_value, seq_idx):
+    def train(self, inputs, actions, predicted_q_value, seq_idx, nepoch = 2):
         a_dict = {i: d for i, d in zip(self.actions,actions)}
         feed_dict = {
             self.inputs: inputs,
@@ -140,7 +152,9 @@ class CriticNetwork(object):
             self.predicted_q_value: predicted_q_value
         }
         feed_dict.update(a_dict)
-        return self.sess.run([self.out, self.optimize], feed_dict = feed_dict)
+        for _ in xrange(nepoch):
+            out, optimize, loss = self.sess.run([self.out, self.optimize, self.loss], feed_dict=feed_dict)
+        return out, optimize, loss
 
     def predict(self, inputs, actions, seq_idx):
         a_dict = {i: d for i, d in zip(self.actions, actions)}
@@ -159,7 +173,7 @@ class CriticNetwork(object):
             self.curr_seq: seq_idx
         }
         feed_dict.update(a_dict)
-        return self.sess.run(self.target_out, feed_dict= feed_dict)
+        return self.sess.run([self.target_out, self.ips], feed_dict= feed_dict)
 
     def action_gradients(self, inputs, actions, seq_idx):
         a_dict = {i: d for i, d in zip(self.actions, actions)}
@@ -170,5 +184,9 @@ class CriticNetwork(object):
         feed_dict.update(a_dict)
         return self.sess.run(self.action_grads, feed_dict=feed_dict)
 
+
     def update_target_network(self):
-        self.sess.run(self.update_target_network_params)
+        self.sess.run(self.update_target_network_params, feed_dict = {self.tau: self.ntau})
+
+    def reset_target_network(self):
+        self.sess.run(self.update_target_network_params, feed_dict = {self.tau: 1.0})

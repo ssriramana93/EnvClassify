@@ -14,7 +14,7 @@
   <framework>
     <system threads="0" />
     <!-- Each experimental run is 1200 seconds long -->
-    <experiment length="10"
+    <experiment length="50"
                 ticks_per_second="10"
                  random_seed = "0"/>
   </framework>
@@ -36,7 +36,7 @@
         <range_and_bearing implementation="medium" medium="rab" />
       </sensors>
       <params num_inputs="67"
-              num_outputs="15" 
+              num_outputs="14" 
               />
     </footbot_rnn_controller>
 

@@ -11,9 +11,17 @@
 /****************************************/
 class experiment {
 public:
- experiment() {};
- ~experiment() {}; 
+	//argos::CSimulator& cSimulator;
+ experiment();
+ ~experiment() {
+  
+ 	std::cout<<"experiment_d"<<std::endl;
+ } 
  double LaunchARGoS();
- double execute();
+ void execute();
+ void destroy() {
+   argos::CSimulator& cSimulator = argos::CSimulator::GetInstance();
+   cSimulator.Destroy();
+ }
 };
 
