@@ -51,7 +51,7 @@ public:
 
 
 //   typedef std::tuple<Real, Real, Real> EnvProbsType;
-   typedef std::array<Real,3> EnvProbsType;
+   typedef std::array<Real,2> EnvProbsType;
    typedef std::vector<EnvProbsType> EnvProbsVecType;
 
 

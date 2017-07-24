@@ -146,17 +146,22 @@ void CFootBotRNNController::ControlStep() {
    for(size_t  i = 0; i < maxDataSize; i++)
         m_pcRABA->SetData(i,commData[i]);
 
-   envProbVec = {output[maxDataSize + 2],output[maxDataSize + 3],output[maxDataSize + 4]};
+//   envProbVec = {output[maxDataSize + 2],output[maxDataSize + 3],output[maxDataSize + 4]};
+   envProbVec = {output[maxDataSize + 2],output[maxDataSize + 3]};
+
    envProbVecs_.push_back(envProbVec);
-  // std::cout<<"maxDataSize"<<maxDataSize + 3<<std::endl; 
-  
+//   assert(((envProbVec[0] + envProbVec[1] + envProbVec[2]) - 1.0f) < 1e-5);
+   assert(((envProbVec[0] + envProbVec[1]) - 1.0f) < 1e-5);
+
+
+
    wrapper.SetReward(GetCurrReward(), id);
 
 }
 
 
 Real CFootBotRNNController::GetCurrReward() {
-  return (envProbVec[currEnvType]);
+  return (envProbVec[currEnvType]*100);
 }
 /****************************************/
 /****************************************/

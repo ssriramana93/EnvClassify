@@ -10,9 +10,9 @@ MAX_EPISODES = 5000
 # Max episode length
 MAX_EP_STEPS = 1000
 # Base learning rate for the Actor network
-ACTOR_LEARNING_RATE = 0.0001
+ACTOR_LEARNING_RATE = 0.00003
 # Base learning rate for the Critic Network
-CRITIC_LEARNING_RATE = 0.001
+CRITIC_LEARNING_RATE = 0.00003
 # Discount factor
 GAMMA = 0.99
 # Soft target update param
@@ -33,8 +33,8 @@ MONITOR_DIR = './results/gym_ddpg'
 SUMMARY_DIR = './results/tf_ddpg'
 RANDOM_SEED = 1234
 # Size of replay buffer
-BUFFER_SIZE = 10000
-MINIBATCH_SIZE = 64
+BUFFER_SIZE = 5000
+MINIBATCH_SIZE = 128
 MIN_HISTORY_LEN = 80
 
 # ===========================
@@ -56,10 +56,6 @@ import cPickle
 
 
 
-def noise_fn(action):
-
-	return action
-
 env = ArgosInterfaceObject.argos_interface
 myexp = libexperiment.experiment()
 
@@ -69,6 +65,18 @@ action_bound = 2
 maxseq_len = 301
 n_robots = 1
 n_envs = 2
+
+
+
+def noise_fn(action):
+	std = 0.05
+	action = action + np.random.normal(scale = std, size = np.size(action))
+	#print action[:, -n_envs:], np.sum(action[:, -n_envs:])
+	action[:, -n_envs:] /= np.sum(action[:, -n_envs:])
+	#print action
+	action = np.clip(action, 0.0, 1.0)
+
+	return action
 
 sess = tf.Session()
 
@@ -88,7 +96,7 @@ sess.__enter__()  # equivalent to `with sess:`
 tf.global_variables_initializer().run()
 
 Traj = []
-nIter = 2
+nIter = 100
 pickle_interval = 10
 actor.reset_target_network()
 for i in xrange(n_robots):
@@ -106,7 +114,7 @@ for ep in xrange(MAX_EPISODES):
 	Traj.append(traj)
 	if not (ep % 10):
 		start = time.time()
-		cPickle.dump(Traj, open("Results.p", "wb"))
+		#cPickle.dump(Traj, open("Results.p", "wb"))
 		end = time.time()
 		print ("Time to Pickle this shit:", end - start)
 
@@ -141,7 +149,7 @@ for ep in xrange(MAX_EPISODES):
 			end = time.time()
 			print ("Time to Predict Critic:", end - start)
 
-			print ips[0]
+			#print ips[0]
 			#print q_next.shape
 			predicted_q = np.reshape(r_batch[i], q_next.shape) + GAMMA*q_next
 

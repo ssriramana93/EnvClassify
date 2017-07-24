@@ -34,8 +34,8 @@ class ReplayBuffer(object):
 #            self.buffer.append(traj)
 #            self.count += 1
         else:
-            self.RemoveFirst(self.ncount)
             self.AppendData(traj)
+            self.RemoveFirst(self.ncount)
         #    self.buffer.popleft()
         #    self.buffer.append(traj)
 
@@ -55,12 +55,15 @@ class ReplayBuffer(object):
         if not self.oa_batch:
             return
         else:
+            print "Removing Shit", count
+            assert(len(self.oa2_batch[0]) >= self.buffer_size)
             for key in self.oa_batch:
                 del self.oa_batch[key][:count]
                 del self.oa2_batch[key][:count]
                 del self.a_batch[key][:count]
                 del self.r_batch[key][:count]
             del self.seq[:count]
+            self.count -= count
 
 
 

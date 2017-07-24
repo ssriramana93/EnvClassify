@@ -23,16 +23,25 @@ class ArgosInterface:
 
 	
 
-	def Add2Dict(self, dictionary, id, value):
-		if (id in dictionary) and (len(dictionary[id]) >= (self.actor.max_seq - 1)):
+	def Add2Dict(self, dictionary, id, value, remove = False):
+
+		if (id in dictionary) and (len(dictionary[id]) >= (self.actor.max_seq - 2)) and remove: # Only the last id will satisfy this condition. So we can remove all dict
+			dictionary[id].append(value)
+
 			traj = (deepcopy(self.oa_hists), deepcopy(self.ac), deepcopy(self.reward))
+		#	print "a", len(self.oa_hists[id]), len(self.ac[id]), len(self.reward[id])
 			self.results.append(traj)
 			self.replay_buffer.add(traj)
+#			self.ClearAllDictById(id)
 			self.ClearAllDict()
+			return
+
 
 		if id not in dictionary:
 			dictionary[id] = []
-		dictionary[id].append(value)	
+		dictionary[id].append(value)
+		#print "Len of Obs, Hist, Ac, Rew:", len(self.obs[id])
+
 
 	def GetfromDict(self, dictionary, id):
 		if id not in dictionary:
@@ -100,13 +109,20 @@ class ArgosInterface:
 	    #self.InitDict(self.oar_seq, self.id)
 		#self.oar_seq[id].append((np.concatenate((self.obs[id][-1], self.ac[id][-1]), axis = 1),reward))
 		#self.history[id].append([self.obs, self.ac, self.reward])
-		self.Add2Dict(self.oa_seq, id, np.concatenate((self.obs[id][-1], self.ac[id][-1])))
+		self.Add2Dict(self.oa_seq, id, np.concatenate((self.obs[id][-1], self.ac[id][-1])), True)
 		#print ("id", len(self.oa_seq[self.id]), self.oa_seq[self.id])
 
 		#self.Add2Dict(self.oar_seq, id, (np.concatenate((self.obs[id][-1], self.ac[id][-1])),reward))
 		#self.Add2Dict(self.oar_seq, id, (self.obs[id][-1], self.ac[id][-1], reward))
 
 
+	def ClearAllDictById(self, id):
+		self.ac[id] = []
+		self.obs[id] = []
+		self.oa_seq[id] = []
+		self.oa_hists[id] = []
+		self.oar_seq[id] = []
+		self.reward[id] = []
 
 	def ClearAllDict(self):
 		self.ac.clear()

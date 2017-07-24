@@ -14,13 +14,13 @@
 
 EnvClassifyLoopFunctions::EnvClassifyLoopFunctions() :
    score(0.0f),
-   nEnvs(20),
+   nEnvs(2),
    xLength(100),
    yLength(100),
    m_pcFloor(NULL),
    m_pcRNG(NULL),
    pixelPerMeter(20),
-   nFootBots(5),
+   nFootBots(1),
    m_unCurrentTrial(0)
    {
     std::cout<<"EnvClassifyLoopFunctions Object Created..."<<std::endl;
@@ -178,11 +178,11 @@ void EnvClassifyLoopFunctions::Reset() {
    if (m_unCurrentTrial >= envList.size()) {
        THROW_ARGOSEXCEPTION("Trial number greater than created!");
     }
-   auto trial = m_pcRNG->Uniform(CRange<UInt32>(0,nEnvs)); 
-   m_unCurrentTrial = trial;
+   //auto trial = m_pcRNG->Uniform(CRange<UInt32>(0,nEnvs)); 
+   //trial = 0;
+   //m_unCurrentTrial = trial;
    currEnv = envList[m_unCurrentTrial];
-   //currEnv = envList[trial];
-   currEnvType = m_unCurrentTrial%2;
+   currEnvType = (m_unCurrentTrial%2 == 1); //This statement should be the same as that in init()
    //currEnvType = trial%2;
  //  std::cout<<"Reset Done"<<m_unCurrentTrial<<std::endl;
    for (auto &controller: m_pcControllers) {
