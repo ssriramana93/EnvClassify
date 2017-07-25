@@ -73,36 +73,34 @@ class ActorNetwork(object):
 
             weights_init  = tflearn.initializations.xavier()
 
-            ip_units = 50
+            ip_units = [128, 128]
             net = tflearn.reshape (inputs, new_shape = [-1, self.sa_dim])
-            net = tflearn.fully_connected(net, ip_units, weights_init = weights_init, activation = 'relu')
-            net = tflearn.reshape (net, new_shape = (-1, self.max_seq, ip_units))
+            for units in ip_units:
+                net = tflearn.fully_connected(net, units, weights_init = weights_init, activation = 'relu')
+
+            net = tflearn.reshape (net, new_shape = (-1, self.max_seq, ip_units[-1]))
             #print "net1", net
           #  net = tflearn.layers.recurrent.gru(inputs, self.a_dim, activation='relu',return_seq = True)
-            net = tflearn.gru(net, 50, activation='tanh',return_seq = True, dynamic = False, weights_init = weights_init)
+            h_units = 128
+            net = tflearn.gru(net, h_units, activation='tanh',return_seq = True, dynamic = False, weights_init = weights_init)
 
             net = tf.concat(net, axis = 0)
 
-            #print "net2", net
 
-            #net = tflearn.reshape (net, new_shape = (-1, 400))
+            op_units = [128, 128]
+            for units in op_units:
+                net = tflearn.fully_connected(net, units, weights_init=weights_init, activation='relu')
+
             net = tflearn.fully_connected(net, self.a_dim, weights_init = weights_init, activation = 'relu')
 
-            ##Apply softmax only to the last self.nenv entries
-            #net = tf.concat([tf.slice(net, [0, 0], [-1, self.a_dim - self.nenv]), tflearn.layers.core.activation(tf.slice(net, [0, self.a_dim - self.nenv], [-1, self.nenv] ), activation = 'softmax')], axis = 1)
+
             net = tflearn.reshape (net, new_shape = (-1, self.max_seq, self.a_dim))
-          #  net = tf.Print(net, [net, tf.shape(net), tf.shape(self.curr_seq)], "net")
-            #out = tf.slice(net, self.curr_seq, [-1, 1, -1]
+
             out = tf.gather_nd(net, self.curr_seq)
 
             scaled_out = tf.concat([tflearn.layers.core.activation(tf.slice(out, [0, 0], [-1, self.a_dim - self.nenv]), activation = 'sigmoid'), tflearn.layers.core.activation(tf.slice(out, [0, 0], [-1, self.nenv]), activation = 'softmax')], axis = 1)
             print scaled_out
-            # Final layer weights are init to Uniform[-3e-3, 3e-3]
-            #w_init = tflearn.initializations.uniform(minval=-0.003, maxval=0.003)
-            #out = tflearn.fully_connected(
-            #    net, self.a_dim, activation='tanh', weights_init=w_init)
-            # Scale output to -action_bound to action_bound
-            #scaled_out = tf.multiply(out, self.action_bound)
+
             return inputs, out, scaled_out
 
     def train(self, inputs, a_gradient, seq_idx):

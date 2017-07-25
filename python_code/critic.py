@@ -15,7 +15,8 @@ class CriticNetwork(object):
         self.seq_len = maxseq_length
         self.n_agents = n_agents
         self.i_agent = i_agent
-        self.learning_rate = learning_rate
+        #self.learning_rate = learning_rate
+        self.learning_rate = tf.placeholder(dtype = tf.float32)
         self.tau = tf.placeholder(dtype = tf.float32)
         self.ntau = tau
         self.curr_seq = tf.placeholder(shape = [None, None], dtype = tf.int32)
@@ -77,24 +78,34 @@ class CriticNetwork(object):
 
 
             net = tflearn.reshape(inputs, new_shape=[-1, self.sa_dim])
-            ip_nunits = 50
-            net = tflearn.fully_connected(net, ip_nunits, weights_init = weights_init, activation = 'relu')
-            net = tflearn.reshape(net, new_shape=(-1, self.seq_len, ip_nunits))
+            ip_units = [128]
+            for units in ip_units:
+                net = tflearn.fully_connected(net, units, weights_init = weights_init, activation = 'relu')
+            net = tflearn.reshape(net, new_shape=(-1, self.seq_len, units))
 
-            net = tflearn.gru(net, 50, activation='tanh',return_seq = True, dynamic = False, weights_init = weights_init)
+            h_unit = 128
+
+            net = tflearn.gru(net, h_unit, activation='tanh',return_seq = True, dynamic = False, weights_init = weights_init)
             net = tf.concat(net, axis = 0)
 
-            op_nunits = 50
-            net = tflearn.fully_connected(net, op_nunits, weights_init = weights_init)
-            net = tflearn.reshape (net, new_shape = (-1, self.seq_len, op_nunits))
+            op_units_s = [128]
+            for units in op_units_s:
+                net = tflearn.fully_connected(net, units, weights_init = weights_init)
+            net = tflearn.reshape (net, new_shape = (-1, self.seq_len, op_units_s[-1]))
 
             net = tf.gather_nd(net, self.curr_seq)
 
-            net = tflearn.reshape(net, new_shape = (-1, op_nunits))
+            net = tflearn.reshape(net, new_shape = (-1, op_units_s[-1]))
 
-            aip_dim = 50
+            aip_dim = 128
             t2 = tflearn.fully_connected(actions_vec, aip_dim, weights_init = weights_init, activation = 'relu')
             net = tflearn.merge([net, t2], mode = 'concat')
+
+            op_units = [128, 128]
+            for units in op_units:
+                net = tflearn.fully_connected(net, units, weights_init = weights_init)
+
+
            # net = tflearn.activation(
            #     tf.matmul(net, net.W) + tf.matmul(actions, t2.W) + t2.b, activation='relu')
 
@@ -144,12 +155,13 @@ class CriticNetwork(object):
         inputs = np.concatenate([inputs, np.zeros((nsamp, self.max_seq - seq_len, self.sa_dim))], axis = 1)
         return inputs, seq_len
 
-    def train(self, inputs, actions, predicted_q_value, seq_idx, nepoch = 2):
+    def train(self, inputs, actions, predicted_q_value, seq_idx,learning_rate,nepoch = 2):
         a_dict = {i: d for i, d in zip(self.actions,actions)}
         feed_dict = {
             self.inputs: inputs,
             self.curr_seq: seq_idx,
-            self.predicted_q_value: predicted_q_value
+            self.predicted_q_value: predicted_q_value,
+            self.learning_rate: learning_rate
         }
         feed_dict.update(a_dict)
         for _ in xrange(nepoch):

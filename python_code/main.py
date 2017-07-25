@@ -10,9 +10,9 @@ MAX_EPISODES = 5000
 # Max episode length
 MAX_EP_STEPS = 1000
 # Base learning rate for the Actor network
-ACTOR_LEARNING_RATE = 0.00003
+ACTOR_LEARNING_RATE = 0.00007
 # Base learning rate for the Critic Network
-CRITIC_LEARNING_RATE = 0.00003
+CRITIC_LEARNING_RATE = 0.00007
 # Discount factor
 GAMMA = 0.99
 # Soft target update param
@@ -33,9 +33,9 @@ MONITOR_DIR = './results/gym_ddpg'
 SUMMARY_DIR = './results/tf_ddpg'
 RANDOM_SEED = 1234
 # Size of replay buffer
-BUFFER_SIZE = 5000
-MINIBATCH_SIZE = 128
-MIN_HISTORY_LEN = 80
+BUFFER_SIZE = 10000
+MINIBATCH_SIZE = 512
+MIN_HISTORY_LEN = 200
 
 # ===========================
 #   Actor and Critic DNNs
@@ -69,7 +69,7 @@ n_envs = 2
 
 
 def noise_fn(action):
-	std = 0.05
+	std = 0.2
 	action = action + np.random.normal(scale = std, size = np.size(action))
 	#print action[:, -n_envs:], np.sum(action[:, -n_envs:])
 	action[:, -n_envs:] /= np.sum(action[:, -n_envs:])
@@ -96,8 +96,9 @@ sess.__enter__()  # equivalent to `with sess:`
 tf.global_variables_initializer().run()
 
 Traj = []
-nIter = 100
+max_nIter = 5
 pickle_interval = 10
+learning_rate = CRITIC_LEARNING_RATE
 actor.reset_target_network()
 for i in xrange(n_robots):
 	critic_vec[i].reset_target_network()
@@ -112,14 +113,17 @@ for ep in xrange(MAX_EPISODES):
 	traj = env.GetTraj()
 
 	Traj.append(traj)
-	if not (ep % 10):
+	if not (ep % pickle_interval):
 		start = time.time()
 		#cPickle.dump(Traj, open("Results.p", "wb"))
 		end = time.time()
-		print ("Time to Pickle this shit:", end - start)
+		print ("Time to Pickle this:", end - start)
 
 	env.ClearAllDict()
-
+	if ep > 5:
+		nIter = max_nIter
+	else:
+		nIter = 2
 
 	for n in xrange(nIter):
 		for i  in xrange(n_robots):
@@ -155,8 +159,12 @@ for ep in xrange(MAX_EPISODES):
 
 			action_vec = [np.reshape(a_batch[j], action_next_vec[0].shape) for j in xrange(n_robots)]
 
+			if ep == 13:
+				learning_rate =  CRITIC_LEARNING_RATE/10.0
+
 			start = time.time()
-			_,_,loss = critic.train(oa_curr, action_vec, predicted_q, seq_idx)
+			_,_,loss = critic.train(oa_curr, action_vec, predicted_q, seq_idx, learning_rate=learning_rate)
+
 			end = time.time()
 			print ("Time to Train Critic:", end - start)
 			print ("Critic Loss", loss)
